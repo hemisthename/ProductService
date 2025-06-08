@@ -1,5 +1,6 @@
 package com.hem.ecom.ProductService.Controller;
 
+import com.hem.ecom.ProductService.BeanObject.ProductBean;
 import com.hem.ecom.ProductService.Config.AppConfig;
 import com.hem.ecom.ProductService.Service.ProductService;
 import org.slf4j.Logger;
@@ -31,9 +32,9 @@ public class ProductServiceController {
     }
 
     @PostMapping ("/addProduct")
-    public void addProduct(@RequestBody  String product){
+    public void addProduct(@RequestBody ProductBean product){
         logger.info("Start ProductServiceController :: addProduct");
-        productService.addProduct();
+        productService.addProduct(product);
         logger.info("End ProductServiceController :: addProduct");
     }
 }
