@@ -1,5 +1,6 @@
 package com.hem.ecom.ProductService.Controller;
 
+import com.hem.ecom.ProductService.Config.AppConfig;
 import com.hem.ecom.ProductService.Service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +19,14 @@ public class ProductServiceController {
     @Autowired
     public ProductService productService;
 
+    @Autowired
+    public AppConfig appConfig;
+
     @GetMapping("/productList")
     public String productList(){
         logger.info("Starting ProductServiceController :: productList");
+        logger.info("Application Properties :: {}",appConfig.isProductCacheEnabled());
+        productService.getAllProductList();
         return "hi world";
     }
 
