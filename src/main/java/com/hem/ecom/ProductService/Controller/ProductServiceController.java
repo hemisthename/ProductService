@@ -23,12 +23,21 @@ public class ProductServiceController {
     @Autowired
     public AppConfig appConfig;
 
-    @GetMapping("/productList")
-    public String productList(){
+    @GetMapping("/productListfromDB")
+    public Object productListFromDB(){
         logger.info("Starting ProductServiceController :: productList");
         logger.info("Application Properties :: {}",appConfig.isProductCacheEnabled());
-        productService.getAllProductList();
-        return "hi world";
+        return  productService.getAllProductListFromDB();
+
+    }
+
+
+    @GetMapping("/productListfromCache")
+    public Object productListfromCache(){
+        logger.info("Starting ProductServiceController :: productList");
+        Object prdFromCache =productService.getAllProductListFromCache();
+        return  productService.getAllProductListFromCache();
+
     }
 
     @PostMapping ("/addProduct")
@@ -37,4 +46,19 @@ public class ProductServiceController {
         productService.addProduct(product);
         logger.info("End ProductServiceController :: addProduct");
     }
+
+    @GetMapping ("/loadCache")
+    public void loadProductstoCache(){
+
+        productService.loadCacheFromDB();
+    }
+
+    @GetMapping ("/clearCache")
+    public void clearCache(){
+
+        productService.ClearCache();
+    }
+
+
+
 }

@@ -6,5 +6,12 @@ public interface  ProductService {
 
    public void addProduct(ProductBean productBean);
 
-   public void getAllProductList();
+   public Object getAllProductListFromDB();
+
+   public Object getAllProductListFromCache();
+
+   public void ClearCache();
+
+   public Object loadCacheFromDB();
+
 }

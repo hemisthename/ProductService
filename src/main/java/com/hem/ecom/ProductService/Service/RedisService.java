@@ -22,5 +22,10 @@ public class RedisService {
 
     public Set<String> getAllKeys() {
         return redisTemplate.keys("*");
+
+    }
+    public void deleteKey(String key) {
+      redisTemplate.delete(key);
+
     }
 }
