@@ -1,0 +1,14 @@
+CREATE TABLE Product (
+    productId VARCHAR(100) PRIMARY KEY,
+    productName VARCHAR(255),
+    productDescription TEXT,
+    productImageUrl VARCHAR(500),
+    productBrand VARCHAR(100),
+    productCategory VARCHAR(100),
+    primarySku VARCHAR(100)
+);
+
+
+DESCRIBE product;
+
+select * from product;
