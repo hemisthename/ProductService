@@ -28,8 +28,8 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     public ProductRepository productRepository;
 
-    public void addProduct(ProductBean productBean){
-        Product product= new Product();
+    public void addProduct(ProductBean productBean) {
+        Product product = new Product();
         try {
 
             product.setProductId(productBean.getProductId());
@@ -43,37 +43,37 @@ public class ProductServiceImpl implements ProductService {
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(product);
 
-            redisService.save(productBean.getProductId().trim(),json);
-        }catch (Exception e){
+            redisService.save(productBean.getProductId().trim(), json);
+        } catch (Exception e) {
             logger.info("Exception");
         }
         logger.info("Start ProductServiceImpl :: addProduct");
     }
 
-    public Object getAllProductListFromDB(){
-       List<Product> productList = productRepository.findAll();
+    public Object getAllProductListFromDB() {
+        List<Product> productList = productRepository.findAll();
         ProductList prdList = new ProductList();
         prdList.setProductList(productList);
         return prdList;
     }
 
-    public Object loadCacheFromDB(){
+    public void loadCacheFromDB() {
         List<Product> productList = productRepository.findAll();
         try {
             for (Product prd : productList) {
                 ObjectMapper objectMapper = new ObjectMapper();
-                String json =objectMapper.writeValueAsString(prd);
-                redisService.save(prd.getProductId(),json);
+                String json = objectMapper.writeValueAsString(prd);
+                redisService.save(prd.getProductId(), json);
             }
-        }catch (Exception e){
-            logger.info("Exception in log {}",e.getMessage());
+        } catch (Exception e) {
+            logger.info("Exception in log {}", e.getMessage());
         }
-        return null;
+
     }
 
-    public void ClearCache(){
+    public void ClearCache() {
         Set<String> getallKeys = redisService.getAllKeys();
-        if(null !=getallKeys) {
+        if (null != getallKeys) {
             for (String key : getallKeys) {
                 Product prd = new Product();
                 logger.info("Redis Key: {}", key);
@@ -83,29 +83,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    public Object getAllProductListFromCache(){
-         Set<String> getallKeys = redisService.getAllKeys();
+    public Object getAllProductListFromCache() {
+        Set<String> getallKeys = redisService.getAllKeys();
         ProductList prdList = new ProductList();
         List<Product> prdList1 = new ArrayList<>();
-    try {
-    if (getallKeys != null) {
-        for (String key : getallKeys) {
-            Product prd = new Product();
-            logger.info("Redis Key: " + key);
-            logger.info("REDIS VALUE " + redisService.get(key));
-            ObjectMapper objectMapper = new ObjectMapper();
-            prd = objectMapper.readValue(redisService.get(key), Product.class);
-            prdList1.add(prd);
+        try {
+            if (getallKeys != null) {
+                for (String key : getallKeys) {
+                    Product prd = new Product();
+                    logger.info("Redis Key: " + key);
+                    logger.info("REDIS VALUE " + redisService.get(key));
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    prd = objectMapper.readValue(redisService.get(key), Product.class);
+                    prdList1.add(prd);
 
+
+                }
+                prdList.setProductList(prdList1);
+            }
+            return prdList;
+        } catch (Exception e) {
+            logger.info("Exception in log {}", e.getMessage());
 
         }
-        prdList.setProductList(prdList1);
-    }
-    return  prdList;
-}catch (Exception e){
-        logger.info("Exception in log {}",e.getMessage());
-
-    }
-    return null;
+        return null;
     }
 }

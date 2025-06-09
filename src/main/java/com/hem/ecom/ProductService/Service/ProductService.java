@@ -12,6 +12,6 @@ public interface  ProductService {
 
    public void ClearCache();
 
-   public Object loadCacheFromDB();
+   public void loadCacheFromDB();
 
 }
